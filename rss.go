@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/xml"
-	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -31,31 +30,26 @@ func urlToFeed(url string) (RSSFeed, error) {
 	}
 
 	resp, err := httpClient.Get(url)
-	fmt.Println("resp, err := httpClient.Get(url)")
 
 	if err != nil {
 		return RSSFeed{}, err
 	}
 
 	defer resp.Body.Close()
-	fmt.Println("defer resp.Body.Close()")
 
 	dat, err := io.ReadAll(resp.Body)
-	fmt.Println("dat, err := io.ReadAll(resp.Body)", dat)
 
 	if err != nil {
 		return RSSFeed{}, err
 	}
 
 	rssFeed := RSSFeed{}
-	fmt.Println("rssFeed := RSSFeed{}", rssFeed)
 
 	err = xml.Unmarshal(dat, &rssFeed)
 
 	if err != nil {
 		return RSSFeed{}, err
 	}
-	fmt.Println("err = xml.Unmarshal(dat, &rssFeed)", rssFeed)
 
 	return rssFeed, nil
 }
